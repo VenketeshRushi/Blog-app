@@ -59,7 +59,7 @@ app.post("/login", async (req, res) => {
         .json({ status: "failed", message: "Can't Login with this Role" });
     }
 
-    const token = jwt.sign({ user }, "1234", { expiresIn: "5 min" });
+    const token = jwt.sign({ user }, "1234", { expiresIn: "1 hr" });
     const refreshtoken = jwt.sign({ user }, "refresh1234", {
       expiresIn: "7 days",
     });
@@ -112,7 +112,7 @@ app.post("/refresh", (req, res) => {
     const verifyRefreshToken = jwt.verify(refreshtoken, "refresh1234");
     if (verifyRefreshToken) {
       let user = verifyRefreshToken.user;
-      const token = jwt.sign({ user }, "1234", { expiresIn: "5 min" });
+      const token = jwt.sign({ user }, "1234", { expiresIn: "1 hr" });
       return res.status(201).send({
         jwttoken: token,
       });
