@@ -10,14 +10,13 @@ import {
   Button,
   Heading,
   Text,
-  Link,
   Select,
   useToast,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { setToast } from "../Utils/extraFunctions";
 
 export default function SignupCard() {
@@ -121,8 +120,8 @@ export default function SignupCard() {
               </Button>
             </Stack>
             <Stack>
-              <Text align={"center"}>
-                Already a user? <Link color={"blue.400"}>Login</Link>
+              <Text justifyContent={"center"} alignItems={"center"} display={"flex"}>
+                Already a user? <Link to={"/login"} ><Text ml={1} textDecorationLine={"underline"} color={"blue.400"}>Login</Text></Link>
               </Text>
             </Stack>
           </Stack>

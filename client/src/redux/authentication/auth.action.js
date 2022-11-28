@@ -13,8 +13,7 @@ export const loginAPI = (data,toast,navigate) => async (dispatch) => {
     console.log(response);
     if (response.status === 201) {
       Cookies.set("jwttoken", response.data.jwttoken);
-      Cookies.set("userid", response.data.userid);
-      Cookies.set("userRole", response.data.role);
+      Cookies.set("refreshtoken", response.data.refreshtoken,);
       setToast(toast, "Login Successfully", "success");
       navigate("/blogs")
     }

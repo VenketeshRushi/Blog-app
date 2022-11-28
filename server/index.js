@@ -8,6 +8,7 @@ const app = express();
 const mongoose = require("mongoose");
 const UserModel = require("./user.model");
 const BlogModel = require("./blog.model");
+const authorization = require("./middlewares/authorization");
 
 app.use(express.json());
 app.use(cors());
@@ -58,36 +59,68 @@ app.post("/login", async (req, res) => {
         .json({ status: "failed", message: "Can't Login with this Role" });
     }
 
-    const token = jwt.sign({ user }, "1234", { expiresIn: "30 min" });
-    res.status(201).send({ jwttoken: token, userid: user._id, role: role });
+    const token = jwt.sign({ user }, "1234", { expiresIn: "5 min" });
+    const refreshtoken = jwt.sign({ user }, "refresh1234", {
+      expiresIn: "7 days",
+    });
+    res.status(201).send({
+      jwttoken: token,
+      userid: user._id,
+      role: role,
+      refreshtoken: refreshtoken,
+    });
   } catch (error) {
     res.status(500).send(error.message);
   }
 });
 
-app.post("/blog", async (req, res) => {
-  console.log(req.body);
-  let info = jwt.decode(req.body.jwt);
-  let id = info.user._id;
-  let userName = info.user.name;
-  let data = req.body.data;
-  console.log(id, data);
+app.post("/blog", authorization, async (req, res) => {
   try {
-    let user = await BlogModel.create({ ...data, user: id, name: userName });
+    console.log(req.user);
+    let user = await BlogModel.create({
+      title: req.body.data.title,
+      description: req.body.data.description,
+      user: req.user._id,
+      name: req.user.name,
+    });
     console.log(user);
-    res.send(userName);
+    res.send(req.user.name);
   } catch (error) {
     res.send(error);
   }
 });
 
-app.get("/", async (req, res) => {
+app.get("/", authorization, async (req, res) => {
   try {
     let blogs = await BlogModel.find();
-    console.log(blogs);
+    //console.log(blogs);
     res.send(blogs);
   } catch (error) {
     res.send(error.message);
+  }
+});
+
+app.post("/refresh", (req, res) => {
+  const bearerToken = req?.body?.headers?.Authorization;
+  if (!bearerToken || !bearerToken.startsWith("Bearer ")) {
+    return res
+      .status(404)
+      .json({ message: "Login again Session Expired", status: "Failed" });
+  }
+  const refreshtoken = bearerToken.split(" ")[1];
+  try {
+    const verifyRefreshToken = jwt.verify(refreshtoken, "refresh1234");
+    if (verifyRefreshToken) {
+      let user = verifyRefreshToken.user;
+      const token = jwt.sign({ user }, "1234", { expiresIn: "5 min" });
+      return res.status(201).send({
+        jwttoken: token,
+      });
+    }
+  } catch (error) {
+    return res
+      .status(404)
+      .json({ message: "Login again Session Expired", status: "Failed" });
   }
 });
 

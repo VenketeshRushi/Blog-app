@@ -42,7 +42,7 @@ export default function Navbar() {
     (state) => state.auth.data.isAuthenticated
   );
   const role = useSelector((state) => state.auth.data.role);
-  console.log(role)
+  console.log(role);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -52,8 +52,6 @@ export default function Navbar() {
     dispatch(logoutAPI());
     setToast(toast, "Logout Successfully", "success");
     Cookies.remove("jwttoken");
-    Cookies.remove("userid");
-    Cookies.remove("userRole");
     navigate("/");
   };
 
@@ -155,12 +153,15 @@ export default function Navbar() {
         </Flex>
 
         {isOpen ? (
-          <Box pb={4} display={{ md: "none" }}>
+          <Box mt={2} pb={4} display={{ md: "none" }}>
             <Stack as={"nav"} spacing={4}>
               {Links.map((link) => (
-                <NavLink key={link.name} name={link.name} path={link.path}>
-                  {link.name}
-                </NavLink>
+                <Box onClick={onClose}>
+                  {" "}
+                  <NavLink key={link.name} name={link.name} path={link.path}>
+                    {link.name}
+                  </NavLink>
+                </Box>
               ))}
             </Stack>
           </Box>

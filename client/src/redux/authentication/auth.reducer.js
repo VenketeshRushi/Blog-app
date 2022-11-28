@@ -7,7 +7,7 @@ import {
 export const authInitalState = {
   loading: false,
   data: {
-    tokrn: "",
+    userid:"",
     role:"",
     isAuthenticated: false,
   },
@@ -23,7 +23,7 @@ export const authReducer = (state = authInitalState, { type, payload }) => {
         loading: false,
         data: {
           ...state.data,
-          token: payload.jwttoken,
+          userid: payload.userid,
           role: payload.role,
           isAuthenticated: true,
         },
@@ -42,8 +42,8 @@ export const authReducer = (state = authInitalState, { type, payload }) => {
         ...state,
         data: {
           ...state.data,
-          token: "",
           role:"",
+          userid:"",
           isAuthenticated: false,
         },
       };

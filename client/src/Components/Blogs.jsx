@@ -1,15 +1,31 @@
-import { Box, Heading, Link, Text, HStack, WrapItem } from "@chakra-ui/react";
+import {
+  Box,
+  Heading,
+  Link,
+  Text,
+  HStack,
+  WrapItem,
+  useToast,
+} from "@chakra-ui/react";
 import axios from "axios";
 import { useState } from "react";
 import { useEffect } from "react";
+import Cookies from "js-cookie";
+import { setToast } from "../Utils/extraFunctions";
 
 export default function Blogs() {
   const [data, setdata] = useState();
+  const toast = useToast();
   useEffect(() => {
+    let jwt = Cookies.get("jwttoken");
     axios
-      .get("http://localhost:8080")
+      .get("http://localhost:8080", {
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+        },
+      })
       .then((res) => setdata(res.data))
-      .catch((err) => console.log(err));
+      .catch((error) => setToast(toast, error.response.data.message, "error"));
   }, []);
   return (
     <>

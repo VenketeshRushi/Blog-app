@@ -15,7 +15,9 @@ import {
 import axios from "axios";
 import Cookies from "js-cookie";
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { logoutAPI } from "../redux/authentication/auth.action";
 import { setToast } from "../Utils/extraFunctions";
 
 function Writeblog() {
@@ -23,7 +25,7 @@ function Writeblog() {
   const [title, setTitle] = useState("");
   const toast = useToast();
   const navigate = useNavigate();
- 
+  const dispatch = useDispatch();
 
   const handleBlog = async () => {
     if (title === "" || input === "") {
@@ -36,14 +38,51 @@ function Writeblog() {
     }
     let jwt = Cookies.get("jwttoken");
     try {
-      let res = await axios.post("http://localhost:8080/blog", {
-        data: { title: title, description: input },
-        jwt: jwt,
-      });
-      console.log(res);
+      let res = await axios.post(
+        "http://localhost:8080/blog",
+        {
+          data: { title: title, description: input },
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
+        }
+      );
       navigate("/blogs");
     } catch (error) {
-      console.log(error);
+      try {
+        if (error.response.status === 400) {
+          let refreshtoken = Cookies.get("refreshtoken");
+          let res1 = await axios.post("http://localhost:8080/refresh", {
+            headers: {
+              Authorization: "Bearer " + refreshtoken,
+            },
+          });
+          Cookies.set("jwttoken", res1.data.jwttoken);
+          jwt = Cookies.get("jwttoken");
+        
+          let res2 = await axios.post(
+            "http://localhost:8080/blog",
+            {
+              data: { title: title, description: input },
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${jwt}`,
+              },
+            }
+          );
+        }
+        navigate("/blogs");
+      } catch (error) {
+        setToast(toast, error.response.data.message, "error");
+        if (error.response.status === 404) {
+          Cookies.remove("jwttoken");
+          Cookies.remove("refreshtoken");
+          dispatch(logoutAPI());
+        }
+      }
     }
   };
   return (

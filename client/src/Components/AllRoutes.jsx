@@ -10,7 +10,7 @@ import SignupCard from "./SignupCard";
 import Writeblog from "./Writeblog";
 
 function AllRoutes() {
-  const toast=useToast()
+  const toast = useToast();
   return (
     <>
       <Navbar />
@@ -18,7 +18,7 @@ function AllRoutes() {
         <Route
           path="/blogs"
           element={
-            <Private>
+            <Private toast={toast}>
               <Blogs />
             </Private>
           }
