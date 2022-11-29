@@ -39,7 +39,7 @@ export default function LoginCard() {
     <Flex minH={"100vh"} align={"center"} justify={"center"} bg={"gray.900"}>
       <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
         <Stack color="white" align={"center"}>
-          <Heading fontSize={"4xl"}>Sign in to your account</Heading>
+          <Heading fontSize={"4xl"}>Login to your account</Heading>
           <Text fontSize={"lg"} color="white">
             to enjoy all of our cool <Link color={"blue.400"}>Blogs</Link> ✌️
           </Text>

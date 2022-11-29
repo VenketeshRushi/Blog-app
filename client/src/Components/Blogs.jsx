@@ -12,21 +12,61 @@ import { useState } from "react";
 import { useEffect } from "react";
 import Cookies from "js-cookie";
 import { setToast } from "../Utils/extraFunctions";
+import { useDispatch } from "react-redux";
+import { logoutAPI } from "../redux/authentication/auth.action";
 
 export default function Blogs() {
   const [data, setdata] = useState();
   const toast = useToast();
+  const dispatch = useDispatch();
+
   useEffect(() => {
+    fetchdata();
+  }, []);
+
+  async function fetchdata() {
     let jwt = Cookies.get("jwttoken");
-    axios
-      .get("http://localhost:8080", {
+    try {
+      let res = await axios.get("http://localhost:8080", {
         headers: {
           Authorization: `Bearer ${jwt}`,
         },
-      })
-      .then((res) => setdata(res.data))
-      .catch((error) => setToast(toast, error.response.data.message, "error"));
-  }, []);
+      });
+      setdata(res.data);
+    } catch (error) {
+      try {
+        if (error.response.status === 400) {
+          let refreshtoken = Cookies.get("refreshtoken");
+          let res1 = await axios.post("http://localhost:8080/refresh", {
+            headers: {
+              Authorization: "Bearer " + refreshtoken,
+            },
+          });
+
+          Cookies.set("jwttoken", res1.data.jwttoken);
+          jwt = Cookies.get("jwttoken");
+
+          axios
+            .get("http://localhost:8080", {
+              headers: {
+                Authorization: `Bearer ${jwt}`,
+              },
+            })
+            .then((res) => setdata(res.data))
+            .catch((error) =>
+              setToast(toast, error.response.data.message, "error")
+            );
+        }
+      } catch (error) {
+        setToast(toast, error.response.data.message, "error");
+        if (error.response.status === 404) {
+          Cookies.remove("jwttoken");
+          Cookies.remove("refreshtoken");
+          dispatch(logoutAPI());
+        }
+      }
+    }
+  }
   return (
     <>
       <Box

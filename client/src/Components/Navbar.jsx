@@ -156,7 +156,7 @@ export default function Navbar() {
           <Box mt={2} pb={4} display={{ md: "none" }}>
             <Stack as={"nav"} spacing={4}>
               {Links.map((link) => (
-                <Box onClick={onClose}>
+                <Box onClick={onClose} width="max-content" border="1px solid">
                   {" "}
                   <NavLink key={link.name} name={link.name} path={link.path}>
                     {link.name}
