@@ -120,8 +120,21 @@ export default function SignupCard() {
               </Button>
             </Stack>
             <Stack>
-              <Text justifyContent={"center"} alignItems={"center"} display={"flex"}>
-                Already a user? <Link to={"/login"} ><Text ml={1} textDecorationLine={"underline"} color={"blue.400"}>Login</Text></Link>
+              <Text
+                justifyContent={"center"}
+                alignItems={"center"}
+                display={"flex"}
+              >
+                Already a user?{" "}
+                <Link to={"/login"}>
+                  <Text
+                    ml={1}
+                    textDecorationLine={"underline"}
+                    color={"blue.400"}
+                  >
+                    Login
+                  </Text>
+                </Link>
               </Text>
             </Stack>
           </Stack>

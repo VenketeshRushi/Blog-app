@@ -1,3 +1,4 @@
+import Cookies from "js-cookie";
 import {
   AUTH_LOG_IN_SUCCESS,
   AUTH_LOG_IN_ERROR,
@@ -7,8 +8,9 @@ import {
 export const authInitalState = {
   loading: false,
   data: {
-    userid:"",
-    role:"",
+    token: Cookies.get("jwttoken") || "",
+    userid: Cookies.get("userid") || "",
+    role: Cookies.get("role") || "",
     isAuthenticated: false,
   },
   error: false,
@@ -23,8 +25,9 @@ export const authReducer = (state = authInitalState, { type, payload }) => {
         loading: false,
         data: {
           ...state.data,
-          userid: payload.userid,
-          role: payload.role,
+          token: Cookies.get("jwttoken"),
+          userid: Cookies.get("userid"),
+          role: Cookies.get("role"),
           isAuthenticated: true,
         },
       };
@@ -42,8 +45,9 @@ export const authReducer = (state = authInitalState, { type, payload }) => {
         ...state,
         data: {
           ...state.data,
-          role:"",
-          userid:"",
+          token: "",
+          role: "",
+          userid: "",
           isAuthenticated: false,
         },
       };

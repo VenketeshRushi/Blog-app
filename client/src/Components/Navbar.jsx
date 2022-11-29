@@ -14,6 +14,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { logoutAPI } from "../redux/authentication/auth.action";
 import { setToast } from "../Utils/extraFunctions";
 import Cookies from "js-cookie";
+import axios from "axios";
 
 const Links = [
   { name: "Blogs", path: "/blogs" },
@@ -41,18 +42,35 @@ export default function Navbar() {
   const isAuthenticated = useSelector(
     (state) => state.auth.data.isAuthenticated
   );
-  const role = useSelector((state) => state.auth.data.role);
-  console.log(role);
+ 
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const toast = useToast();
 
   const handlelogout = () => {
-    dispatch(logoutAPI());
-    setToast(toast, "Logout Successfully", "success");
-    Cookies.remove("jwttoken");
-    navigate("/");
+    let jwt = Cookies.get("jwttoken");
+    try {
+      let res = axios.post("http://localhost:8080/logout", {
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+        },
+      });
+      setToast(toast, res.data.message, "success");
+      Cookies.remove("jwttoken");
+      Cookies.remove("refreshtoken");
+      Cookies.remove("userid");
+      Cookies.remove("role");
+      dispatch(logoutAPI());
+      navigate("/");
+    } catch (error) {
+      Cookies.remove("jwttoken");
+      Cookies.remove("refreshtoken");
+      Cookies.remove("userid");
+      Cookies.remove("role");
+      dispatch(logoutAPI());
+      navigate("/");
+    }
   };
 
   return (
@@ -156,7 +174,19 @@ export default function Navbar() {
           <Box mt={2} pb={4} display={{ md: "none" }}>
             <Stack as={"nav"} spacing={4}>
               {Links.map((link) => (
-                <Box onClick={onClose} width="max-content" border="1px solid">
+                <Box
+                  px={2}
+                  py={1}
+                  rounded={"md"}
+                  _hover={{
+                    textDecoration: "none",
+                    bgGradient: "linear(to-r, red.400,pink.400)",
+                    boxShadow: "xl",
+                  }}
+                  onClick={onClose}
+                  width="max-content"
+                  color={"white"}
+                >
                   {" "}
                   <NavLink key={link.name} name={link.name} path={link.path}>
                     {link.name}

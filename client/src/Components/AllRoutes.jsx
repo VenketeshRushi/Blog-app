@@ -1,8 +1,6 @@
-import { useToast } from "@chakra-ui/react";
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import Blogs from "./Blogs";
-import Home from "./Home";
 import LoginCard from "./LoginCard";
 import Navbar from "./Navbar";
 import { Private, Privaterole } from "./Private";
@@ -10,7 +8,6 @@ import SignupCard from "./SignupCard";
 import Writeblog from "./Writeblog";
 
 function AllRoutes() {
-  const toast = useToast();
   return (
     <>
       <Navbar />
@@ -18,7 +15,7 @@ function AllRoutes() {
         <Route
           path="/blogs"
           element={
-            <Private toast={toast}>
+            <Private>
               <Blogs />
             </Private>
           }
@@ -26,12 +23,11 @@ function AllRoutes() {
         <Route
           path="/writeblog"
           element={
-            <Privaterole toast={toast}>
+            <Privaterole>
               <Writeblog />
             </Privaterole>
           }
         />
-        <Route path="/home" element={<Home />}></Route>
         <Route path="/login" element={<LoginCard />}></Route>
         <Route path="/" element={<SignupCard />}></Route>
       </Routes>

@@ -1,7 +1,6 @@
 import {
   Box,
   Heading,
-  Link,
   Text,
   HStack,
   WrapItem,
@@ -43,7 +42,15 @@ export default function Blogs() {
             },
           });
 
-          Cookies.set("jwttoken", res1.data.jwttoken);
+          Cookies.set("jwttoken", res1.data.jwttoken, {
+            expires: new Date(new Date().getTime() + 60 * 60 * 1000),
+          });
+          Cookies.set("userid", res1.data.userid, {
+            expires: new Date(new Date().getTime() + 7 * 60 * 60 * 1000),
+          });
+          Cookies.set("role", res1.data.role, {
+            expires: new Date(new Date().getTime() + 60 * 60 * 1000),
+          });
           jwt = Cookies.get("jwttoken");
 
           axios
@@ -95,11 +102,47 @@ export default function Blogs() {
           >
             <Box textAlign={"justify"} w="100%">
               <Heading fontSize="xl" marginTop="2">
-                <Link textDecoration="none" _hover={{ textDecoration: "none" }}>
+                <Text
+                  maxHeight={"60px"}
+                  overflowY={"scroll"}
+                  textDecoration="none"
+                  _hover={{ textDecoration: "none" }}
+                  sx={{
+                    "&::-webkit-scrollbar": {
+                      width: "8px",
+                      borderRadius: "8px",
+                      backgroundColor: `rgb(23,25,35)`,
+                    },
+                    "&::-webkit-scrollbar-thumb": {
+                      border: "1px solid rgb(23,25,35)",
+                      height: "5px",
+                      backgroundColor: `rgb(26,32,44)`,
+                    },
+                  }}
+                >
                   {ele.title}
-                </Link>
+                </Text>
               </Heading>
-              <Text as="p" fontSize="md" marginTop="2">
+              <Text
+                maxHeight={"90px"}
+                scrollBehavior={"smooth"}
+                overflowY={"scroll"}
+                as="p"
+                fontSize="md"
+                marginTop="2"
+                sx={{
+                  "&::-webkit-scrollbar": {
+                    width: "8px",
+                    borderRadius: "8px",
+                    backgroundColor: `rgb(23,25,35)`,
+                  },
+                  "&::-webkit-scrollbar-thumb": {
+                    border: "1px solid rgb(23,25,35)",
+                    height: "5px",
+                    backgroundColor: `rgb(26,32,44)`,
+                  },
+                }}
+              >
                 {ele.description}
               </Text>
               <HStack
