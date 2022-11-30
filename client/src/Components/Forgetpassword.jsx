@@ -16,7 +16,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { resetpasswordremove } from "../redux/authentication/auth.action";
 import { setToast } from "../Utils/extraFunctions";
 
@@ -98,6 +98,22 @@ export default function Forgetpassword() {
                   Submit
                 </Button>
               </Stack>
+              <Box
+                justifyContent={"center"}
+                alignItems={"center"}
+                display={"flex"}
+              >
+                Return To {" "}
+                <Link to={"/login"}>
+                  <Text
+                    ml={1}
+                    textDecorationLine={"underline"}
+                    color={"blue.400"}
+                  >
+                    Login
+                  </Text>
+                </Link>
+              </Box>
             </Stack>
           </Box>
         </Stack>

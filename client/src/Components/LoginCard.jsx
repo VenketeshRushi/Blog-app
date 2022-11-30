@@ -86,7 +86,7 @@ export default function LoginCard() {
                     alignItems={"center"}
                     display={"flex"}
                   >
-                    Return to ?{" "}
+                    Return To {" "}
                     <Text
                       ml={1}
                       textDecorationLine={"underline"}

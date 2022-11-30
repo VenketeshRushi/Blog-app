@@ -87,7 +87,7 @@ app.post("/login", async (req, res) => {
 app.post("/checkmail", async (req, res) => {
   try {
     let user = await UserModel.findOne({ email: req.body.data });
-    console.log(user);
+
     const otp = Math.floor(Math.random() * (9999 - 1000) + 1000);
 
     transport.sendMail({

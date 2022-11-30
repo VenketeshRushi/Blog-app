@@ -39,8 +39,8 @@ const NavLink = ({ name, path }) => (
 
 export default function Navbar() {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const isAuthenticated = useSelector(
-    (state) => state.auth.data.isAuthenticated
+  const token = useSelector(
+    (state) => state.auth.data.token
   );
 
   const dispatch = useDispatch();
@@ -99,7 +99,7 @@ export default function Navbar() {
             ))}
           </HStack>
 
-          {isAuthenticated ? (
+          {token ? (
             <Flex alignItems={"center"}>
               <Button
                 fontSize={"sm"}

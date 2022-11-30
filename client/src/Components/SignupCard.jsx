@@ -18,12 +18,43 @@ import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { setToast } from "../Utils/extraFunctions";
+import { useEffect } from "react";
+import Cookies from "js-cookie";
 
 export default function SignupCard() {
   const [showPassword, setShowPassword] = useState(false);
   const [signUpcreds, setsignUpcreds] = useState({});
   const navigate = useNavigate();
   const toast = useToast();
+
+  async function checkrefrshtoken() {
+    try {
+      let refreshtoken = Cookies.get("refreshtoken");
+      let response = await axios.post("http://localhost:8080/refresh", {
+        headers: {
+          Authorization: "Bearer " + refreshtoken,
+        },
+      });
+      Cookies.set("jwttoken", response.data.jwttoken, {
+        expires: new Date(new Date().getTime() + 60 * 60 * 1000),
+      });
+      Cookies.set("userid", response.data.userid, {
+        expires: new Date(new Date().getTime() + 60 * 60 * 1000),
+      });
+      Cookies.set("role", response.data.role, {
+        expires: new Date(new Date().getTime() + 60 * 60 * 1000),
+      });
+      navigate("/blogs");
+    } catch (error) {
+      navigate("/");
+    }
+  }
+  useEffect(() => {
+    let refreshtoken = Cookies.get("refreshtoken");
+    if (refreshtoken && refreshtoken.length > 0) {
+      checkrefrshtoken();
+    }
+  }, []);
 
   const hanldeChange = (e) => {
     const { name, value } = e.target;

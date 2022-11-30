@@ -18,10 +18,10 @@ export const loginAPI = (data, toast, navigate) => async (dispatch) => {
         expires: new Date(new Date().getTime() + 60 * 60 * 1000),
       });
       Cookies.set("refreshtoken", response.data.refreshtoken, {
-        expires: new Date(new Date().getTime() + 60 * 60 * 1000),
+        expires: new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000),
       });
       Cookies.set("userid", response.data.userid, {
-        expires: new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000),
+        expires: new Date(new Date().getTime() + 60 * 60 * 1000),
       });
       Cookies.set("role", response.data.role, {
         expires: new Date(new Date().getTime() + 60 * 60 * 1000),
@@ -44,12 +44,11 @@ export const loginAPI = (data, toast, navigate) => async (dispatch) => {
 export const logoutAPI = () => ({ type: AUTH_LOG_OUT });
 
 export const resetpassword = (data, toast, navigate) => async (dispatch) => {
-  console.log(data);
+
   try {
     let res = await axios.post("http://localhost:8080/checkmail", {
       data,
     });
-    console.log(res);
     dispatch({
       type: RESET_PASSWORD,
       payload: res.data.email,

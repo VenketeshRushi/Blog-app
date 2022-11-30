@@ -4,11 +4,11 @@ import { Navigate } from "react-router-dom";
 import { setToast } from "../Utils/extraFunctions";
 
 export const Private = ({ children }) => {
-  const isAuthenticated = useSelector(
-    (state) => state.auth.data.isAuthenticated
+  const token = useSelector(
+    (state) => state.auth.data.token
   );
   const toast = useToast();
-  if (!isAuthenticated) {
+  if (!token) {
     setToast(toast, "You Have To Login To See All Blogs", "error");
     return <Navigate to={"/login"} />;
   } else {
