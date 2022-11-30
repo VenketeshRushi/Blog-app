@@ -3,6 +3,8 @@ import {
   AUTH_LOG_IN_SUCCESS,
   AUTH_LOG_IN_ERROR,
   AUTH_LOG_OUT,
+  RESET_PASSWORD,
+  RESET_PASSWORD_REMOVE
 } from "./auth.types";
 
 export const authInitalState = {
@@ -14,6 +16,7 @@ export const authInitalState = {
     isAuthenticated: false,
   },
   error: false,
+  resetemail: "",
 };
 
 export const authReducer = (state = authInitalState, { type, payload }) => {
@@ -52,7 +55,18 @@ export const authReducer = (state = authInitalState, { type, payload }) => {
         },
       };
     }
-
+    case RESET_PASSWORD: {
+      return {
+        ...state,
+        resetemail: payload,
+      };
+    }
+    case RESET_PASSWORD_REMOVE:{
+      return {
+        ...state,
+        resetemail: "",
+      };
+    }
     default: {
       return state;
     }

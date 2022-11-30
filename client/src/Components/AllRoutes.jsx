@@ -1,6 +1,7 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import Blogs from "./Blogs";
+import Forgetpassword from "./Forgetpassword";
 import LoginCard from "./LoginCard";
 import Navbar from "./Navbar";
 import { Private, Privaterole } from "./Private";
@@ -30,6 +31,7 @@ function AllRoutes() {
         />
         <Route path="/login" element={<LoginCard />}></Route>
         <Route path="/" element={<SignupCard />}></Route>
+        <Route path="/resetpassword" element={<Forgetpassword />}></Route>
       </Routes>
     </>
   );

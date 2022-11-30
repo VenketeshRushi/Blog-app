@@ -120,7 +120,7 @@ export default function SignupCard() {
               </Button>
             </Stack>
             <Stack>
-              <Text
+              <Box
                 justifyContent={"center"}
                 alignItems={"center"}
                 display={"flex"}
@@ -135,7 +135,7 @@ export default function SignupCard() {
                     Login
                   </Text>
                 </Link>
-              </Text>
+              </Box>
             </Stack>
           </Stack>
         </Box>

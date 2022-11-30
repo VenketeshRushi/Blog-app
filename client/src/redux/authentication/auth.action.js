@@ -2,6 +2,8 @@ import {
   AUTH_LOG_IN_SUCCESS,
   AUTH_LOG_IN_ERROR,
   AUTH_LOG_OUT,
+  RESET_PASSWORD,
+  RESET_PASSWORD_REMOVE,
 } from "./auth.types";
 import axios from "axios";
 import Cookies from "js-cookie";
@@ -40,3 +42,28 @@ export const loginAPI = (data, toast, navigate) => async (dispatch) => {
 };
 
 export const logoutAPI = () => ({ type: AUTH_LOG_OUT });
+
+export const resetpassword = (data, toast, navigate) => async (dispatch) => {
+  console.log(data);
+  try {
+    let res = await axios.post("http://localhost:8080/checkmail", {
+      data,
+    });
+    console.log(res);
+    dispatch({
+      type: RESET_PASSWORD,
+      payload: res.data.email,
+    });
+    Cookies.set("otp", res.data.otp, {
+      expires: new Date(new Date().getTime() + 5 * 60 * 1000),
+    });
+    setToast(toast, "Reset OTP Sent To Your Email", "success");
+    navigate("/resetpassword");
+  } catch (error) {
+    setToast(toast, error.response.data.message, "error");
+  }
+};
+
+export const resetpasswordremove = () => ({
+  type: RESET_PASSWORD_REMOVE,
+});

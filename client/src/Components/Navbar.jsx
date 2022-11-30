@@ -42,7 +42,6 @@ export default function Navbar() {
   const isAuthenticated = useSelector(
     (state) => state.auth.data.isAuthenticated
   );
- 
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -84,7 +83,7 @@ export default function Navbar() {
             display={{ md: "none" }}
             onClick={isOpen ? onClose : onOpen}
             variant={"solid"}
-            colorScheme={"teal"}
+            colorScheme={"gray.900"}
           />
 
           <HStack

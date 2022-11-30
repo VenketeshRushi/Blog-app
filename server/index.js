@@ -1,5 +1,7 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
+
+const nodemailer = require("nodemailer");
 const cors = require("cors");
 const port = 8080;
 
@@ -13,6 +15,17 @@ const authorization = require("./middlewares/authorization");
 app.use(express.json());
 app.use(cors());
 
+const transport = nodemailer.createTransport({
+  service:"gmail",
+  host: "smtp.gmail.com",
+  secure:"false",
+  port: 587,
+  auth: {
+    user: "ramanrushi97@gmail.com",
+    pass: "jxdshyhirwvwuael",
+  },
+});
+
 app.post("/signup", async (req, res) => {
   let { email } = req.body;
   try {
@@ -23,7 +36,6 @@ app.post("/signup", async (req, res) => {
         .json({ status: "Failed", message: "Please try with different email" });
     }
     user = await UserModel.create(req.body);
-    console.log(user);
     return res.status(201).send("Signed in successfully");
   } catch (error) {
     return res.status(500).json({ message: error.message, status: "Failed" });
@@ -33,9 +45,7 @@ app.post("/signup", async (req, res) => {
 app.post("/login", async (req, res) => {
   try {
     let { email, password, role } = req.body;
-    console.log(req.body);
     let user = await UserModel.findOne({ email });
-    console.log(user);
 
     if (!user) {
       return res
@@ -66,7 +76,7 @@ app.post("/login", async (req, res) => {
     res.status(201).send({
       jwttoken: token,
       userid: user._id,
-      role: role,
+      role: user.role,
       refreshtoken: refreshtoken,
     });
   } catch (error) {
@@ -74,30 +84,42 @@ app.post("/login", async (req, res) => {
   }
 });
 
-app.post("/blog", authorization, async (req, res) => {
+app.post("/checkmail", async (req, res) => {
   try {
-    console.log(req.user);
-    let user = await BlogModel.create({
-      title: req.body.data.title,
-      description: req.body.data.description,
-      user: req.user._id,
-      name: req.user.name,
-    });
+    let user = await UserModel.findOne({ email: req.body.data });
     console.log(user);
-    res.send(req.user.name);
+    const otp = Math.floor(Math.random() * (9999 - 1000) + 1000);
+
+    transport.sendMail({
+      to: user.email,
+      subject: "Password reset OTP",
+      from: "venketsh@gmail.com",
+      text: `Your password reset otp is ${otp}`,
+    });
+
+    return res.status(201).send({ email: user.email, otp: otp });
   } catch (error) {
-    res.send(error);
+    return res
+      .status(500)
+      .json({ status: "failed", message: "With This Email There Is No User" });
   }
 });
 
-app.get("/", authorization, async (req, res) => {
+app.post("/resetpassword", async (req, res) => {
+  let password = req.body.data.password;
+  let email = req.body.data.email;
   try {
-    let blogs = await BlogModel.find();
-    //console.log(blogs);
-    res.send(blogs);
+    let filter = { email: email };
+    let update = { password: password };
+    let user = await UserModel.findOneAndUpdate(filter, update);
+    return res.status(201).send("Password updated successfully Login Now");
   } catch (error) {
-    res.send(error.message);
+    return res.send(error.message);
   }
+});
+
+app.post("/logout", authorization, (req, res) => {
+  return res.send({ message: "Logout successfuly" });
 });
 
 app.post("/refresh", (req, res) => {
@@ -108,6 +130,7 @@ app.post("/refresh", (req, res) => {
       .json({ message: "Login again Session Expired", status: "Failed" });
   }
   const refreshtoken = bearerToken.split(" ")[1];
+
   try {
     const verifyRefreshToken = jwt.verify(refreshtoken, "refresh1234");
     if (verifyRefreshToken) {
@@ -115,12 +138,38 @@ app.post("/refresh", (req, res) => {
       const token = jwt.sign({ user }, "1234", { expiresIn: "1 hr" });
       return res.status(201).send({
         jwttoken: token,
+        userid: user._id,
+        role: user.role,
       });
     }
   } catch (error) {
     return res
       .status(404)
       .json({ message: "Login again Session Expired", status: "Failed" });
+  }
+});
+
+app.post("/blog", authorization, async (req, res) => {
+  try {
+    let user = await BlogModel.create({
+      title: req.body.data.title,
+      description: req.body.data.description,
+      user: req.user._id,
+      name: req.user.name,
+    });
+    //console.log(user);
+    res.send(req.user.name);
+  } catch (error) {
+    res.send(error);
+  }
+});
+
+app.get("/", authorization, async (req, res) => {
+  try {
+    let blogs = await BlogModel.find();
+    res.send(blogs);
+  } catch (error) {
+    res.send(error.message);
   }
 });
 
