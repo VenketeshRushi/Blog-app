@@ -4,15 +4,17 @@ import {
   AUTH_LOG_IN_ERROR,
   AUTH_LOG_OUT,
   RESET_PASSWORD,
-  RESET_PASSWORD_REMOVE
+  RESET_PASSWORD_REMOVE,
+  REFRESH,
+  REFRESH_REMOVE,
 } from "./auth.types";
 
 export const authInitalState = {
   loading: false,
   data: {
-    token: Cookies.get("jwttoken") || "",
-    userid: Cookies.get("userid") || "",
-    role: Cookies.get("role") || "",
+    token: "",
+    userid: "",
+    role: "",
     isAuthenticated: false,
   },
   error: false,
@@ -61,10 +63,37 @@ export const authReducer = (state = authInitalState, { type, payload }) => {
         resetemail: payload,
       };
     }
-    case RESET_PASSWORD_REMOVE:{
+    case RESET_PASSWORD_REMOVE: {
       return {
         ...state,
         resetemail: "",
+      };
+    }
+    case REFRESH: {
+      console.log("REFRESHTOKEN is Good");
+      return {
+        ...state,
+        loading: false,
+        data: {
+          ...state.data,
+          token: Cookies.get("jwttoken"),
+          userid: Cookies.get("userid"),
+          role: Cookies.get("role"),
+          isAuthenticated: true,
+        },
+      };
+    }
+    case REFRESH_REMOVE: {
+      console.log("REFRESHTOKEN IS EXPIRED");
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          token: "",
+          role: "",
+          userid: "",
+          isAuthenticated: false,
+        },
       };
     }
     default: {

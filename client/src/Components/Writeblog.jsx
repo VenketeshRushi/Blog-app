@@ -28,7 +28,6 @@ function Writeblog() {
 
   const handleBlog = async () => {
     if (title === "" || input === "") {
-      console.log("hi");
       return setToast(
         toast,
         "Please Add Title And Descripton For Blog",
@@ -38,7 +37,7 @@ function Writeblog() {
     let jwt = Cookies.get("jwttoken");
     try {
       let res = await axios.post(
-        "http://localhost:8080/blog",
+        "http://localhost:8080/blog/blog",
         {
           data: { title: title, description: input },
         },
@@ -53,7 +52,7 @@ function Writeblog() {
       try {
         if (error.response.status === 400) {
           let refreshtoken = Cookies.get("refreshtoken");
-          let res1 = await axios.post("http://localhost:8080/refresh", {
+          let res1 = await axios.post("http://localhost:8080/user/refresh", {
             headers: {
               Authorization: "Bearer " + refreshtoken,
             },
@@ -70,7 +69,7 @@ function Writeblog() {
           jwt = Cookies.get("jwttoken");
 
           let res2 = await axios.post(
-            "http://localhost:8080/blog",
+            "http://localhost:8080/blog/blog",
             {
               data: { title: title, description: input },
             },
@@ -87,7 +86,10 @@ function Writeblog() {
         if (error.response.status === 404) {
           Cookies.remove("jwttoken");
           Cookies.remove("refreshtoken");
+          Cookies.remove("userid");
+          Cookies.remove("role");
           dispatch(logoutAPI());
+          navigate("/");
         }
       }
     }

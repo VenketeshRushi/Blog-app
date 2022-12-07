@@ -40,7 +40,7 @@ const authorization = (req, res, next) => {
       console.log("hi i am authorization your token is verifyed");
     } catch (e) {
       blacklist.push(token);
-      console.log(blacklist);
+      //console.log(blacklist);
       console.log("hi i am authorization your token is not verifyed");
       return res
         .status(400)

@@ -16,7 +16,14 @@ import {
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { loginAPI, resetpassword } from "../redux/authentication/auth.action";
+import {
+  loginAPI,
+  refreshCheck,
+  resetpassword,
+} from "../redux/authentication/auth.action";
+import { useEffect } from "react";
+import Cookies from "js-cookie";
+
 
 export default function LoginCard() {
   const [signUpcreds, setsignUpcreds] = useState({});
@@ -25,6 +32,13 @@ export default function LoginCard() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const toast = useToast();
+
+  useEffect(() => {
+    let refreshtoken = Cookies.get("refreshtoken");
+    if (refreshtoken) {
+      dispatch(refreshCheck(navigate));
+    }
+  }, []);
 
   const hanldeChange = (e) => {
     const { name, value } = e.target;
@@ -86,7 +100,7 @@ export default function LoginCard() {
                     alignItems={"center"}
                     display={"flex"}
                   >
-                    Return To {" "}
+                    Return To{" "}
                     <Text
                       ml={1}
                       textDecorationLine={"underline"}

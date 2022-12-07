@@ -17,7 +17,7 @@ import { useDispatch } from "react-redux";
 import { logoutAPI } from "../redux/authentication/auth.action";
 import { useNavigate } from "react-router-dom";
 
-export default function Blogs() {
+export default function () {
   const [data, setdata] = useState();
   const toast = useToast();
   const dispatch = useDispatch();
@@ -31,19 +31,21 @@ export default function Blogs() {
 
   async function fetchdata() {
     let jwt = Cookies.get("jwttoken");
+    let userid = Cookies.get("userid");
     try {
-      let res = await axios.get("http://localhost:8080/blog", {
+      let res = await axios.get("http://localhost:8080/blog/yourblogs", {
         headers: {
           Authorization: `Bearer ${jwt}`,
         },
         params: {
           page: page,
+          userid: userid,
         },
       });
       setdata(res.data.blogs);
       let count = Math.ceil(+res.data.blogscount / 9);
       setTotalPages(count);
-      console.log(res);
+      console.log("hi",res,data);
     } catch (error) {
       try {
         if (error.response.status === 400) {
@@ -65,7 +67,7 @@ export default function Blogs() {
           });
           jwt = Cookies.get("jwttoken");
           axios
-            .get("http://localhost:8080/blog", {
+            .get("http://localhost:8080/blog/yourblogs", {
               headers: {
                 Authorization: `Bearer ${jwt}`,
               },
@@ -95,6 +97,20 @@ export default function Blogs() {
       }
     }
   }
+
+  const handledelete = (id) => {
+    try {
+      let response = axios.delete(`http://localhost:8080/blog/deleteblog`, {
+        params: {
+          id: id,
+        },
+      });
+      setToast(toast, "Blog Deleted Successfully", "success");
+      fetchdata();
+    } catch (error) {
+      setToast(toast, error.response.data.message, "error");
+    }
+  };
   return (
     <>
       <Box
@@ -120,6 +136,9 @@ export default function Blogs() {
             key={index}
             bgColor={"gray.800"}
             color="white"
+            border={"1px solid"}
+            display={"block"}
+            height={"auto"}
           >
             <Box textAlign={"justify"} w="100%">
               <Heading fontSize="xl" marginTop="2">
@@ -176,6 +195,21 @@ export default function Blogs() {
                 <Text fontWeight={"semibold"}>—</Text>
                 <Text>{ele.createdAt.split("T")[0]}</Text>
               </HStack>
+              <Button
+                onClick={() => handledelete(ele._id)}
+                display={"block"}
+                margin={"auto"}
+                marginTop={5}
+                variant={"outline"}
+                colorScheme={"red"}
+                _hover={{
+                  bgGradient: "linear(to-r, red.400,pink.400)",
+                  boxShadow: "xl",
+                  color: "white",
+                }}
+              >
+                Delete
+              </Button>
             </Box>
           </WrapItem>
         ))}

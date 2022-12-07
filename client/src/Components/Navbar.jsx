@@ -19,6 +19,7 @@ import axios from "axios";
 const Links = [
   { name: "Blogs", path: "/blogs" },
   { name: "Start Writing", path: "/writeblog" },
+  { name: "Your Blogs", path: "/yourblogs" },
 ];
 
 const NavLink = ({ name, path }) => (
@@ -50,7 +51,7 @@ export default function Navbar() {
   const handlelogout = () => {
     let jwt = Cookies.get("jwttoken");
     try {
-      let res = axios.post("http://localhost:8080/logout", {
+      let res = axios.post("http://localhost:8080/user/logout", {
         headers: {
           Authorization: `Bearer ${jwt}`,
         },

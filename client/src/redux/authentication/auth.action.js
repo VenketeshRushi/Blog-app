@@ -4,6 +4,8 @@ import {
   AUTH_LOG_OUT,
   RESET_PASSWORD,
   RESET_PASSWORD_REMOVE,
+  REFRESH,
+  REFRESH_REMOVE,
 } from "./auth.types";
 import axios from "axios";
 import Cookies from "js-cookie";
@@ -11,7 +13,7 @@ import { setToast } from "../../Utils/extraFunctions";
 
 export const loginAPI = (data, toast, navigate) => async (dispatch) => {
   try {
-    let response = await axios.post("http://localhost:8080/login", data);
+    let response = await axios.post("http://localhost:8080/user/login", data);
     console.log(response);
     if (response.status === 201) {
       Cookies.set("jwttoken", response.data.jwttoken, {
@@ -26,13 +28,15 @@ export const loginAPI = (data, toast, navigate) => async (dispatch) => {
       Cookies.set("role", response.data.role, {
         expires: new Date(new Date().getTime() + 60 * 60 * 1000),
       });
-      setToast(toast, "Login Successfully", "success");
+      dispatch({
+        type: AUTH_LOG_IN_SUCCESS,
+        payload: response.data,
+      });
+      setToast(toast, response.data.message, "success");
       navigate("/blogs");
+    } else {
+      setToast(toast, response.data.message, "error");
     }
-    dispatch({
-      type: AUTH_LOG_IN_SUCCESS,
-      payload: response.data,
-    });
   } catch (error) {
     dispatch({
       type: AUTH_LOG_IN_ERROR,
@@ -44,9 +48,8 @@ export const loginAPI = (data, toast, navigate) => async (dispatch) => {
 export const logoutAPI = () => ({ type: AUTH_LOG_OUT });
 
 export const resetpassword = (data, toast, navigate) => async (dispatch) => {
-
   try {
-    let res = await axios.post("http://localhost:8080/checkmail", {
+    let res = await axios.post("http://localhost:8080/user/checkmail", {
       data,
     });
     dispatch({
@@ -66,3 +69,33 @@ export const resetpassword = (data, toast, navigate) => async (dispatch) => {
 export const resetpasswordremove = () => ({
   type: RESET_PASSWORD_REMOVE,
 });
+
+export const refreshCheck = (navigate) => async (dispatch) => {
+  try {
+    let refreshtoken = Cookies.get("refreshtoken");
+    let response = await axios.post("http://localhost:8080/user/refresh", {
+      headers: {
+        Authorization: "Bearer " + refreshtoken,
+      },
+    });
+    console.log(response.data);
+    Cookies.set("jwttoken", response.data.jwttoken, {
+      expires: new Date(new Date().getTime() + 60 * 60 * 1000),
+    });
+    Cookies.set("userid", response.data.userid, {
+      expires: new Date(new Date().getTime() + 60 * 60 * 1000),
+    });
+    Cookies.set("role", response.data.role, {
+      expires: new Date(new Date().getTime() + 60 * 60 * 1000),
+    });
+    dispatch({
+      type: REFRESH,
+      payload: response.data,
+    });
+    navigate("/blogs");
+  } catch (error) {
+    dispatch({
+      type: REFRESH_REMOVE,
+    });
+  }
+};

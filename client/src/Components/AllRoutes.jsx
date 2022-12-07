@@ -7,6 +7,7 @@ import Navbar from "./Navbar";
 import { Private, Privaterole } from "./Private";
 import SignupCard from "./SignupCard";
 import Writeblog from "./Writeblog";
+import Yourblogs from "./Yourblogs";
 
 function AllRoutes() {
   return (
@@ -26,6 +27,14 @@ function AllRoutes() {
           element={
             <Privaterole>
               <Writeblog />
+            </Privaterole>
+          }
+        />
+        <Route
+          path="/yourblogs"
+          element={
+            <Privaterole>
+              <Yourblogs />
             </Privaterole>
           }
         />
