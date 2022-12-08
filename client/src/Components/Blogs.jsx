@@ -7,6 +7,7 @@ import {
   useToast,
   Button,
   Stack,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useState } from "react";
@@ -106,8 +107,8 @@ export default function Blogs() {
         gap="10px"
         width={"100%"}
         pt={5}
-        minHeight={"92.5vh"}
-        bg={"gray.900"}
+        minHeight={"82.5vh"}
+        bg={useColorModeValue("gray.50", "gray.900")}
       >
         {data?.map((ele, index) => (
           <WrapItem
@@ -180,7 +181,7 @@ export default function Blogs() {
           </WrapItem>
         ))}
       </Box>
-      <Stack bg={"gray.900"} pt={4} pb={4}>
+      <Stack bg={"gray.800"} pt={4} pb={2}>
         <Stack maxWidth={"max-content"} m={"auto"} direction={"row"}>
           {" "}
           <Button

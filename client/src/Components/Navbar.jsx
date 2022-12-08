@@ -7,6 +7,9 @@ import {
   useDisclosure,
   Stack,
   useToast,
+  useColorMode,
+  Center,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,6 +18,7 @@ import { logoutAPI } from "../redux/authentication/auth.action";
 import { setToast } from "../Utils/extraFunctions";
 import Cookies from "js-cookie";
 import axios from "axios";
+import { DarkModeBtn } from "./DarkModeBtn";
 
 const Links = [
   { name: "Blogs", path: "/blogs" },
@@ -40,10 +44,8 @@ const NavLink = ({ name, path }) => (
 
 export default function Navbar() {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const token = useSelector(
-    (state) => state.auth.data.token
-  );
-
+  const token = useSelector((state) => state.auth.data.token);
+  const { colorMode } = useColorMode();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const toast = useToast();
@@ -83,8 +85,13 @@ export default function Navbar() {
             aria-label={"Open Menu"}
             display={{ md: "none" }}
             onClick={isOpen ? onClose : onOpen}
+            color={"white"}
             variant={"solid"}
-            colorScheme={"gray.900"}
+            bgGradient="linear(to-r, red.400,pink.400)"
+            _hover={{
+              bgGradient: "linear(to-r, red.400,pink.400)",
+              boxShadow: "xl",
+            }}
           />
 
           <HStack
@@ -118,6 +125,11 @@ export default function Navbar() {
               >
                 Logout
               </Button>
+              <Box h={"36px"} bg={colorMode === "Dark" && "Light"}>
+                <Center h={"36px"} mr={"30px"} cursor={"pointer"}>
+                  <DarkModeBtn />
+                </Center>
+              </Box>
             </Flex>
           ) : (
             <Flex alignItems={"center"}>

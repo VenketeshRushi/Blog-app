@@ -10,6 +10,7 @@ import {
   Text,
   HStack,
   WrapItem,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import axios from "axios";
 import Cookies from "js-cookie";
@@ -27,13 +28,13 @@ function Writeblog() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  useEffect(()=>{
-    let user= Cookies.get("role");
-    if(user!=="blogger"){
-      setToast(toast,"To Create Blogs You Have To Login As Blogger", "error")
-      navigate("/blogs")
+  useEffect(() => {
+    let user = Cookies.get("role");
+    if (user !== "blogger") {
+      setToast(toast, "To Create Blogs You Have To Login As Blogger", "error");
+      navigate("/blogs");
     }
-  },[])
+  }, []);
 
   const handleBlog = async () => {
     if (title === "" || input === "") {
@@ -108,7 +109,7 @@ function Writeblog() {
       <Box
         width={"100%"}
         minHeight={"92.5vh"}
-        bg={"gray.900"}
+        bg={useColorModeValue("gray.50", "gray.900")}
         display={"flex"}
         flexDirection={"row"}
         flexWrap="wrap-reverse"
@@ -128,28 +129,30 @@ function Writeblog() {
           <Box w={"100%"}>
             {" "}
             <FormControl id="Title" isRequired>
-              <FormLabel mt="2%" mb="2%" color={"white"}>
+              <FormLabel mt="2%" mb="2%">
                 Title
               </FormLabel>
               <Input
-                backgroundColor="#ebecf0"
+                backgroundColor="useColorModeValue('gray.50', 'gray.900')"
                 type="text"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                placeholder="Enter Title For Yor Blog"
+                placeholder="Enter Title For Yor Blog Here"
+                variant={"outline"}
               ></Input>
             </FormControl>
           </Box>
           <Box width={"100%"}>
             {" "}
             <FormControl id="Description" isRequired>
-              <FormLabel mt="2%" mb="2%" color={"white"}>
+              <FormLabel mt="2%" mb="2%">
                 Description
               </FormLabel>
               <Textarea
                 height="200px"
-                placeholder="Type Info About Your Blog."
-                backgroundColor="#ebecf0"
+                placeholder="Write Description About Your Blog Here"
+                backgroundColor="useColorModeValue('gray.50', 'gray.900')"
+                variant={"outline"}
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
               />
@@ -179,6 +182,7 @@ function Writeblog() {
           key={title}
           bg="white"
           margin={"auto"}
+          bgColor={useColorModeValue("gray.50", "gray.800")}
         >
           <Box textAlign={"justify"} w="100%">
             <Heading fontSize="xl" marginTop="2">
@@ -208,7 +212,7 @@ function Writeblog() {
               display="flex"
               alignItems="center"
             >
-              <Text fontWeight="medium">Raman Rushi</Text>
+              <Text fontWeight="medium">Venketesh Rushi</Text>
               <Text fontWeight={"semibold"}>—</Text>
               <Text>{new Date().toLocaleDateString()}</Text>
             </HStack>
