@@ -18,15 +18,20 @@ import { logoutAPI } from "../redux/authentication/auth.action";
 import { useNavigate } from "react-router-dom";
 
 export default function () {
-  const [data, setdata] = useState();
+  const [data, setdata] = useState([]);
   const toast = useToast();
   const dispatch = useDispatch();
   const [page, setPage] = useState(1);
   const [totalpages, setTotalPages] = useState(null);
   const navigate = useNavigate();
-
   useEffect(() => {
-    fetchdata();
+    let user = Cookies.get("role");
+    if (user !== "blogger") {
+      setToast(toast,"To See Your Blogs You Have To Login As Blogger", "error")
+      navigate("/blogs");
+    } else {
+      fetchdata();
+    }
   }, [page]);
 
   async function fetchdata() {
@@ -45,7 +50,6 @@ export default function () {
       setdata(res.data.blogs);
       let count = Math.ceil(+res.data.blogscount / 9);
       setTotalPages(count);
-      console.log("hi",res,data);
     } catch (error) {
       try {
         if (error.response.status === 400) {

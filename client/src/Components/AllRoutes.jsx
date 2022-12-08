@@ -25,17 +25,17 @@ function AllRoutes() {
         <Route
           path="/writeblog"
           element={
-            <Privaterole>
+            <Private>
               <Writeblog />
-            </Privaterole>
+            </Private>
           }
         />
         <Route
           path="/yourblogs"
           element={
-            <Privaterole>
+            <Private>
               <Yourblogs />
-            </Privaterole>
+            </Private>
           }
         />
         <Route path="/login" element={<LoginCard />}></Route>

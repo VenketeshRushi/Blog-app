@@ -14,6 +14,7 @@ import {
 import axios from "axios";
 import Cookies from "js-cookie";
 import React, { useState } from "react";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logoutAPI } from "../redux/authentication/auth.action";
@@ -25,6 +26,14 @@ function Writeblog() {
   const toast = useToast();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  useEffect(()=>{
+    let user= Cookies.get("role");
+    if(user!=="blogger"){
+      setToast(toast,"To Create Blogs You Have To Login As Blogger", "error")
+      navigate("/blogs")
+    }
+  },[])
 
   const handleBlog = async () => {
     if (title === "" || input === "") {
@@ -47,7 +56,7 @@ function Writeblog() {
           },
         }
       );
-      navigate("/blogs");
+      navigate("/yourblogs");
     } catch (error) {
       try {
         if (error.response.status === 400) {
@@ -80,7 +89,7 @@ function Writeblog() {
             }
           );
         }
-        navigate("/blogs");
+        navigate("/yourblogs");
       } catch (error) {
         setToast(toast, error.response.data.message, "error");
         if (error.response.status === 404) {
