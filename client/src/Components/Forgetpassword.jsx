@@ -11,6 +11,7 @@ import {
   PinInput,
   PinInputField,
   useToast,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import axios from "axios";
 import Cookies from "js-cookie";
@@ -60,15 +61,25 @@ export default function Forgetpassword() {
   };
   return (
     <>
-      <Flex minH={"92.5vh"} align={"center"} justify={"center"} bg={"gray.900"}>
+      <Flex
+        minH={"92.5vh"}
+        align={"center"}
+        justify={"center"}
+        bg={useColorModeValue("gray.50", "gray.800")}
+      >
         <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
-          <Stack color="white" align={"center"}>
+          <Stack align={"center"}>
             <Heading fontSize={"4xl"}>Reset Your Password</Heading>
-            <Text fontSize={"lg"} color="white">
+            <Text fontSize={"lg"} color={"gray.600"}>
               Enter OTP which Was send On Your Email.
             </Text>
           </Stack>
-          <Box rounded={"lg"} bg="white" boxShadow={"lg"} p={8}>
+          <Box
+            rounded={"lg"}
+            bg={useColorModeValue("white", "gray.700")}
+            boxShadow={"lg"}
+            p={8}
+          >
             <Stack spacing={4}>
               <FormControl id="password" isRequired>
                 <FormLabel>Enter New Password</FormLabel>
@@ -103,7 +114,7 @@ export default function Forgetpassword() {
                 alignItems={"center"}
                 display={"flex"}
               >
-                Return To {" "}
+                Return To{" "}
                 <Link to={"/login"}>
                   <Text
                     ml={1}

@@ -75,10 +75,23 @@ export default function Navbar() {
     }
   };
 
+  const linkColor = useColorModeValue('gray.800', 'gray.100');
+
   return (
     <>
-      <Box bg={"gray.800"} color="white" px={4}>
-        <Flex h={12} alignItems={"center"} justifyContent={"space-between"}>
+      <Box px={4}>
+        <Flex
+          h={12}
+          alignItems={"center"}
+          justifyContent={"space-between"}
+          bg={useColorModeValue("white", "gray.800")}
+          color={useColorModeValue("gray.900", "white")}
+          borderBottom={1}
+          py={{ base: 2 }}
+          px={{ base: 2 }}
+          borderStyle={"solid"}
+          borderColor={useColorModeValue("gray.200", "gray.900")}
+        >
           <IconButton
             size={"md"}
             icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
@@ -92,6 +105,8 @@ export default function Navbar() {
               bgGradient: "linear(to-r, red.400,pink.400)",
               boxShadow: "xl",
             }}
+            transition={'all .25s ease-in-out'}
+            transform={isOpen ? 'rotate(180deg)' : ''}
           />
 
           <HStack
@@ -132,7 +147,7 @@ export default function Navbar() {
               </Box>
             </Flex>
           ) : (
-            <Flex alignItems={"center"}>
+            <Flex alignItems={"center"} justifyContent={"space-between"}>
               <Link
                 _hover={{
                   textDecoration: "none",
@@ -150,7 +165,8 @@ export default function Navbar() {
                     boxShadow: "xl",
                   }}
                   size={"sm"}
-                  mr={4}
+                  mr={2}
+                  ml={2}
                 >
                   Login
                 </Button>
@@ -173,21 +189,26 @@ export default function Navbar() {
                     boxShadow: "xl",
                   }}
                   size={"sm"}
-                  mr={4}
+                  mr={1}
                 >
                   SignUp
                 </Button>
               </Link>
+              <Box h={"36px"} bg={colorMode === "Dark" && "Light"}>
+                <Center h={"36px"} mr={"15px"} cursor={"pointer"}>
+                  <DarkModeBtn />
+                </Center>
+              </Box>
             </Flex>
           )}
         </Flex>
 
         {isOpen ? (
-          <Box mt={2} pb={4} display={{ md: "none" }}>
+          <Box mt={2} pb={4} display={{ md: "none" }}  >
             <Stack as={"nav"} spacing={4}>
               {Links.map((link) => (
                 <Box
-                  px={2}
+                  px={5}
                   py={1}
                   rounded={"md"}
                   _hover={{
@@ -197,7 +218,8 @@ export default function Navbar() {
                   }}
                   onClick={onClose}
                   width="max-content"
-                  color={"white"}
+                  color={linkColor}
+                  fontWeight={"500"}
                 >
                   {" "}
                   <NavLink key={link.name} name={link.name} path={link.path}>

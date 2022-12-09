@@ -219,43 +219,40 @@ export default function () {
           </WrapItem>
         ))}
       </Box>
-      <Stack bg={"gray.900"} pt={2} pb={2}>
+      <Stack bg={useColorModeValue("gray.50", "gray.900")} pt={4} pb={2}>
         <Stack maxWidth={"max-content"} m={"auto"} direction={"row"}>
           {" "}
           <Button
-            bg={"transparent"}
-            colorScheme={"whiteAlpha"}
-            color={"white"}
             variant="outline"
+            bg={useColorModeValue("white", "gray.900")}
+            color={useColorModeValue("gray.900", "whiteAlpha.900")}
             fontWeight={"bold"}
-            disabled={page === 1}
             _hover={{
-              bg: "rgb(26,32,44)",
+              border: "2px solid",
             }}
+            disabled={page === 1}
             onClick={() => setPage(page - 1)}
           >
             prev
           </Button>
           <Button
-            colorScheme={"whiteAlpha"}
             variant="outline"
-            bg={"transparent"}
-            color={"white"}
+            bg={useColorModeValue("white", "gray.900")}
+            color={useColorModeValue("gray.900", "whiteAlpha.900")}
             fontWeight={"bold"}
             _hover={{
-              bg: "transparent",
+              border: "2px solid",
             }}
           >
             {page}
           </Button>
           <Button
-            bg={"transparent"}
-            colorScheme={"whiteAlpha"}
-            color={"white"}
             variant="outline"
+            bg={useColorModeValue("white", "gray.900")}
+            color={useColorModeValue("gray.900", "whiteAlpha.900")}
             fontWeight={"bold"}
             _hover={{
-              bg: "rgb(26,32,44)",
+              border: "2px solid",
             }}
             disabled={page === totalpages}
             onClick={() => setPage(page + 1)}

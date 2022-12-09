@@ -180,7 +180,6 @@ function Writeblog() {
           p={4}
           borderRadius={4}
           key={title}
-          bg="white"
           margin={"auto"}
           bgColor={useColorModeValue("gray.50", "gray.800")}
         >

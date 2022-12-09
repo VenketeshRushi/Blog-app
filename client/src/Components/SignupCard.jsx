@@ -12,6 +12,7 @@ import {
   Text,
   Select,
   useToast,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
@@ -94,17 +95,30 @@ export default function SignupCard() {
     }
   };
   return (
-    <Flex minH={"92.5vh"} align={"center"} justify={"center"} bg={"gray.900"}>
+    <Flex
+      minH={"92.5vh"}
+      align={"center"}
+      justify={"center"}
+      bg={useColorModeValue("gray.50", "gray.800")}
+    >
       <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
-        <Stack color="white" align={"center"}>
-          <Heading fontSize={"4xl"} textAlign={"center"}>
+        <Stack align={"center"}>
+          <Heading fontSize={"4xl"} textAlign={"center"} >
             Sign up
           </Heading>
-          <Text fontSize={"lg"} color={"white"}>
+          <Text
+            fontSize={"lg"}
+            color={'gray.600'}
+          >
             to enjoy all of our cool features ✌️
           </Text>
         </Stack>
-        <Box rounded={"lg"} bg="white" boxShadow={"lg"} p={8}>
+        <Box
+          rounded={"lg"}
+          bg={useColorModeValue("white", "gray.700")}
+          boxShadow={"lg"}
+          p={8}
+        >
           <Stack spacing={4}>
             <FormControl id="Name" isRequired>
               <FormLabel>Name</FormLabel>

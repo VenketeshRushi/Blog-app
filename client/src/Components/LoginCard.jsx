@@ -12,6 +12,7 @@ import {
   Text,
   Select,
   useToast,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -23,7 +24,6 @@ import {
 } from "../redux/authentication/auth.action";
 import { useEffect } from "react";
 import Cookies from "js-cookie";
-
 
 export default function LoginCard() {
   const [signUpcreds, setsignUpcreds] = useState({});
@@ -56,23 +56,26 @@ export default function LoginCard() {
     dispatch(resetpassword(resetemail, toast, navigate));
   };
 
+  let color = useColorModeValue("white", "gray.700")
+
   return (
     <>
-      <Flex minH={"92.5vh"} align={"center"} justify={"center"} bg={"gray.900"}>
+      <Flex
+        minH={"92.5vh"}
+        align={"center"}
+        justify={"center"}
+        bg={useColorModeValue("gray.50", "gray.800")}
+      >
         {reset ? (
           <Stack spacing={5} mx={"auto"} maxW={"lg"} py={12} px={6}>
-            <Stack color="white" align={"center"} spacing={2}>
+            <Stack align={"center"} spacing={2}>
               <Heading fontSize={"4xl"}>Enter Your Email</Heading>
-              <Text fontSize={"lg"} color="white">
-                OTP Will Be sent To Your Email.
-              </Text>
-              <Text fontSize={"lg"} color="white">
-                For Reseting Your Password.
-              </Text>
+              <Text color={'gray.600'} fontSize={"lg"}>OTP Will Be sent To Your Email.</Text>
+              <Text color={'gray.600'} fontSize={"lg"}>For Reseting Your Password.</Text>
             </Stack>
-            <Box rounded={"lg"} bg="white" boxShadow={"lg"} p={8}>
+            <Box rounded={"lg"} bg={color} boxShadow={"lg"} p={8}>
               <Stack spacing={4}>
-                <Text color={"gray.900"} fontSize={"md"} fontWeight="bold">
+                <Text fontSize={"md"} fontWeight="bold">
                   Email Address
                 </Text>
                 <Input
@@ -117,14 +120,14 @@ export default function LoginCard() {
           </Stack>
         ) : (
           <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
-            <Stack color="white" align={"center"}>
+            <Stack align={"center"}>
               <Heading fontSize={"4xl"}>Login to your account</Heading>
-              <Text fontSize={"lg"} color="white">
+              <Text fontSize={"lg"} color={'gray.600'}>
                 to enjoy all of our cool <Link color={"blue.400"}>Blogs</Link>{" "}
                 ✌️
               </Text>
             </Stack>
-            <Box rounded={"lg"} bg="white" boxShadow={"lg"} p={8}>
+            <Box rounded={"lg"} bg={color} boxShadow={"lg"} p={8}>
               <Stack spacing={4}>
                 <FormControl id="email" isRequired>
                   <FormLabel>Email address</FormLabel>
