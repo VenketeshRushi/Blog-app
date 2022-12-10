@@ -6,17 +6,39 @@ const {
   getAllYourBlogs,
   deleteblog,
 } = require("../controllers/blog.controller");
+const fileUpload = require("express-fileupload");
+const cloudinary = require("cloudinary").v2;
 
 const app = express.Router();
 
+app.use(
+  fileUpload({
+    useTempFiles: true,
+  })
+);
+
+cloudinary.config({
+  cloud_name: "dkdfmmywa",
+  api_key: "371296886297185",
+  api_secret: "7TDFMzxqMJ0tyx7ct8-DN8bqfaY",
+});
+
 app.post("/blog", authorization, async (req, res) => {
   try {
-    const title = req.body.data.title;
-    const description = req.body.data.description;
+    const title = req.body.title;
+    const description = req.body.description;
+    const img = req.files.image;
     const user = req.user._id;
     const name = req.user.name;
-    let data = await postBlog({ title, description, user, name });
-    return res.send(data);
+    console.log(title, description, img, user, name);
+    cloudinary.uploader
+      .upload(img.tempFilePath)
+      .then(async (res) => {
+        let url = res.secure_url;
+        let data = await postBlog({ title, description, user, name, url });
+        return res.send(data);
+      })
+      .catch((err) => res.send(err));
   } catch (error) {
     return res.send(error);
   }

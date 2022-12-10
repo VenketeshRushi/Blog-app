@@ -8,6 +8,7 @@ import {
   Button,
   Stack,
   useColorModeValue,
+  Image,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useState } from "react";
@@ -28,7 +29,11 @@ export default function () {
   useEffect(() => {
     let user = Cookies.get("role");
     if (user !== "blogger") {
-      setToast(toast,"To See Your Blogs You Have To Login As Blogger", "error")
+      setToast(
+        toast,
+        "To See Your Blogs You Have To Login As Blogger",
+        "error"
+      );
       navigate("/blogs");
     } else {
       fetchdata();
@@ -128,7 +133,7 @@ export default function () {
         width={"100%"}
         pt={5}
         minHeight={"84.5vh"}
-        bg={useColorModeValue('gray.50', 'gray.900')}
+        bg={useColorModeValue("gray.50", "gray.900")}
       >
         {data?.map((ele, index) => (
           <WrapItem
@@ -146,6 +151,20 @@ export default function () {
             bgColor={"gray.800"}
           >
             <Box textAlign={"justify"} w="100%">
+              <Box w="100%" mb={5}>
+                <Box borderRadius="lg" overflow="hidden" maxHeight={"300px"} border={"2px solid"}>
+                  <Image
+                    transform="scale(1.0)"
+                    src={ele.img}
+                    alt="some text"
+                    objectFit={"contain"}
+                    transition="0.3s ease-in-out"
+                    _hover={{
+                      transform: "scale(1.05)",
+                    }}
+                  />
+                </Box>
+              </Box>
               <Heading fontSize="xl" marginTop="2">
                 <Text
                   maxHeight={"60px"}

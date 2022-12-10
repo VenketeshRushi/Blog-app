@@ -24,6 +24,7 @@ import { setToast } from "../Utils/extraFunctions";
 function Writeblog() {
   const [input, setInput] = useState("");
   const [title, setTitle] = useState("");
+  const [files, setFiles] = useState("");
   const toast = useToast();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -37,26 +38,24 @@ function Writeblog() {
   }, []);
 
   const handleBlog = async () => {
-    if (title === "" || input === "") {
+    if (title === "" || input === "" || files === "") {
       return setToast(
         toast,
-        "Please Add Title And Descripton For Blog",
+        "Please Add Image, Title And Descripton For Blog",
         "error"
       );
     }
     let jwt = Cookies.get("jwttoken");
+    const formData = new FormData();
+    formData.append("image", files);
+    formData.append("title", title);
+    formData.append("description", input);
     try {
-      let res = await axios.post(
-        "http://localhost:8080/blog/blog",
-        {
-          data: { title: title, description: input },
+      let res = await axios.post("http://localhost:8080/blog/blog", formData, {
+        headers: {
+          Authorization: `Bearer ${jwt}`,
         },
-        {
-          headers: {
-            Authorization: `Bearer ${jwt}`,
-          },
-        }
-      );
+      });
       navigate("/yourblogs");
     } catch (error) {
       try {
@@ -80,9 +79,7 @@ function Writeblog() {
 
           let res2 = await axios.post(
             "http://localhost:8080/blog/blog",
-            {
-              data: { title: title, description: input },
-            },
+            formData,
             {
               headers: {
                 Authorization: `Bearer ${jwt}`,
@@ -128,6 +125,21 @@ function Writeblog() {
         >
           <Box w={"100%"}>
             {" "}
+            <FormControl id="Image" isRequired>
+              <FormLabel mt="2%" mb="2%">
+                Image
+              </FormLabel>
+              <Input
+                type="file"
+                aria-hidden="true"
+                accept="image/*"
+                backgroundColor="useColorModeValue('gray.50', 'gray.900')"
+                variant={"outline"}
+                padding={1.5}
+                name="image"
+                onChange={(e) => setFiles(e.target.files[0])}
+              />
+            </FormControl>
             <FormControl id="Title" isRequired>
               <FormLabel mt="2%" mb="2%">
                 Title

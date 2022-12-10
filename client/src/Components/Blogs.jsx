@@ -8,6 +8,7 @@ import {
   Button,
   Stack,
   useColorModeValue,
+  Image,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useState } from "react";
@@ -123,6 +124,25 @@ export default function Blogs() {
             color="white"
           >
             <Box textAlign={"justify"} w="100%">
+              <Box w="100%" mb={5}>
+                <Box
+                  borderRadius="lg"
+                  overflow="hidden"
+                  maxHeight={"300px"}
+                  border={"2px solid"}
+                >
+                  <Image
+                    transform="scale(1.0)"
+                    src={ele.img}
+                    alt="some text"
+                    objectFit={"cover"}
+                    transition="0.3s ease-in-out"
+                    _hover={{
+                      transform: "scale(1.05)",
+                    }}
+                  />
+                </Box>
+              </Box>
               <Heading fontSize="xl" marginTop="2">
                 <Text
                   maxHeight={"60px"}

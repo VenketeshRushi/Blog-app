@@ -1,9 +1,12 @@
 const BlogModel = require("../model/blog.model");
 
-async function postBlog({ title, description, user, name }) {
+
+async function postBlog({ title, description, user, name, url }) {
+  
   let data = await BlogModel.create({
     title: title,
     description: description,
+    img: url,
     user: user,
     name: name,
   });
