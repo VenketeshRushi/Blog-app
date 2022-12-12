@@ -9,6 +9,7 @@ import {
   Stack,
   useColorModeValue,
   Image,
+  Avatar,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useState } from "react";
@@ -123,7 +124,7 @@ export default function () {
   };
   return (
     <>
-      <Box
+      {/* <Box
         display={"flex"}
         flexDirection="row"
         justifyContent={"space-around"}
@@ -234,6 +235,150 @@ export default function () {
               >
                 Delete
               </Button>
+            </Box>
+          </WrapItem>
+        ))}
+      </Box>
+      <Stack bg={useColorModeValue("gray.50", "gray.900")} pt={4} pb={2}>
+        <Stack maxWidth={"max-content"} m={"auto"} direction={"row"}>
+          {" "}
+          <Button
+            variant="outline"
+            bg={useColorModeValue("white", "gray.900")}
+            color={useColorModeValue("gray.900", "whiteAlpha.900")}
+            fontWeight={"bold"}
+            _hover={{
+              border: "2px solid",
+            }}
+            disabled={page === 1}
+            onClick={() => setPage(page - 1)}
+          >
+            prev
+          </Button>
+          <Button
+            variant="outline"
+            bg={useColorModeValue("white", "gray.900")}
+            color={useColorModeValue("gray.900", "whiteAlpha.900")}
+            fontWeight={"bold"}
+            _hover={{
+              border: "2px solid",
+            }}
+          >
+            {page}
+          </Button>
+          <Button
+            variant="outline"
+            bg={useColorModeValue("white", "gray.900")}
+            color={useColorModeValue("gray.900", "whiteAlpha.900")}
+            fontWeight={"bold"}
+            _hover={{
+              border: "2px solid",
+            }}
+            disabled={page === totalpages}
+            onClick={() => setPage(page + 1)}
+          >
+            next
+          </Button>
+        </Stack>
+      </Stack> */}
+      <Box
+        display={"flex"}
+        flexDirection="row"
+        justifyContent={"space-around"}
+        alignItems="flex-start"
+        flexWrap={"wrap"}
+        gap="20px"
+        width={"100%"}
+        pt={5}
+        minHeight={"82.5vh"}
+        bg={useColorModeValue("gray.50", "gray.900")}
+      >
+        {data?.map((ele, index) => (
+          <WrapItem width={{ base: "100%", sm: "45%", md: "45%", lg: "30%" }}>
+            <Box w="90%" margin={"auto"}>
+              <Box borderRadius="lg" overflow="hidden" maxHeight={"300px"}>
+                <Image
+                  transform="scale(1.0)"
+                  src={ele.img}
+                  alt="some text"
+                  objectFit="contain"
+                  width="100%"
+                  transition="0.3s ease-in-out"
+                  _hover={{
+                    transform: "scale(1.05)",
+                  }}
+                />
+              </Box>
+              <Heading fontSize="xl" marginTop="2">
+                <Text
+                  maxHeight={"60px"}
+                  scrollBehavior={"smooth"}
+                  overflowY={"scroll"}
+                  sx={{
+                    "&::-webkit-scrollbar": {
+                      width: "6px",
+                      borderRadius: "8px",
+                      border: "1px solid rgb(27,32,44)",
+                    },
+                    "&::-webkit-scrollbar-thumb": {
+                      height: "4px",
+                      borderRadius: "8px",
+                      backgroundColor: `gray.900`,
+                    },
+                  }}
+                >
+                  {ele.title}
+                </Text>
+              </Heading>
+              <Text
+                as="p"
+                fontSize="md"
+                marginTop="2"
+                maxHeight={"60px"}
+                scrollBehavior={"smooth"}
+                overflowY={"scroll"}
+                sx={{
+                  "&::-webkit-scrollbar": {
+                    width: "6px",
+                    borderRadius: "8px",
+                    border: "1px solid rgb(27,32,44)",
+                  },
+                  "&::-webkit-scrollbar-thumb": {
+                    height: "4px",
+                    borderRadius: "8px",
+                    backgroundColor: `gray.900`,
+                  },
+                }}
+              >
+                {ele.description}
+              </Text>
+              <HStack
+                marginTop="2"
+                spacing="2"
+                display="flex"
+                alignItems="center"
+              >
+                <Avatar size="xs" />
+                <Text fontWeight="medium">{ele.name}</Text>
+                <Text>—</Text>
+                <Text>
+                  {ele.createdAt.split("T")[0].replaceAll("-", " / ")}
+                </Text>
+              </HStack>
+              <HStack mt={3}>
+                <Button
+                  width={"100%"}
+                  onClick={() => handledelete(ele._id)}
+                  variant={"outline"}
+                  _hover={{
+                    bgGradient: "linear(to-r, red.400,pink.400)",
+                    boxShadow: "xl",
+                    color: "white",
+                  }}
+                >
+                  Delete
+                </Button>
+              </HStack>
             </Box>
           </WrapItem>
         ))}

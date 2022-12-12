@@ -9,6 +9,7 @@ import {
   Stack,
   useColorModeValue,
   Image,
+  Avatar,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useState } from "react";
@@ -105,60 +106,43 @@ export default function Blogs() {
         justifyContent={"space-around"}
         alignItems="flex-start"
         flexWrap={"wrap"}
-        gap="10px"
+        gap="20px"
         width={"100%"}
         pt={5}
         minHeight={"82.5vh"}
         bg={useColorModeValue("gray.50", "gray.900")}
       >
         {data?.map((ele, index) => (
-          <WrapItem
-            width={{ base: "100%", sm: "45%", md: "45%", lg: "30%" }}
-            boxShadow={
-              "rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px"
-            }
-            p={5}
-            borderRadius={4}
-            key={index}
-            bgColor={"gray.800"}
-            color="white"
-          >
-            <Box textAlign={"justify"} w="100%">
-              <Box w="100%" mb={5}>
-                <Box
-                  borderRadius="lg"
-                  overflow="hidden"
-                  maxHeight={"300px"}
-                  border={"2px solid"}
-                >
-                  <Image
-                    transform="scale(1.0)"
-                    src={ele.img}
-                    alt="some text"
-                    objectFit={"cover"}
-                    transition="0.3s ease-in-out"
-                    _hover={{
-                      transform: "scale(1.05)",
-                    }}
-                  />
-                </Box>
+          <WrapItem width={{ base: "100%", sm: "45%", md: "45%", lg: "30%" }}>
+            <Box w="90%" margin={"auto"}>
+              <Box borderRadius="lg" overflow="hidden" maxHeight={"300px"}>
+                <Image
+                  transform="scale(1.0)"
+                  src={ele.img}
+                  alt="some text"
+                  objectFit="contain"
+                  width="100%"
+                  transition="0.3s ease-in-out"
+                  _hover={{
+                    transform: "scale(1.05)",
+                  }}
+                />
               </Box>
               <Heading fontSize="xl" marginTop="2">
                 <Text
                   maxHeight={"60px"}
+                  scrollBehavior={"smooth"}
                   overflowY={"scroll"}
-                  textDecoration="none"
-                  _hover={{ textDecoration: "none" }}
                   sx={{
                     "&::-webkit-scrollbar": {
-                      width: "8px",
+                      width: "6px",
                       borderRadius: "8px",
-                      backgroundColor: `rgb(23,25,35)`,
+                      border: "1px solid rgb(27,32,44)",
                     },
                     "&::-webkit-scrollbar-thumb": {
-                      border: "1px solid rgb(23,25,35)",
-                      height: "5px",
-                      backgroundColor: `rgb(26,32,44)`,
+                      height: "4px",
+                      borderRadius: "8px",
+                      backgroundColor: `gray.900`,
                     },
                   }}
                 >
@@ -166,22 +150,22 @@ export default function Blogs() {
                 </Text>
               </Heading>
               <Text
-                maxHeight={"90px"}
-                scrollBehavior={"smooth"}
-                overflowY={"scroll"}
                 as="p"
                 fontSize="md"
                 marginTop="2"
+                maxHeight={"60px"}
+                scrollBehavior={"smooth"}
+                overflowY={"scroll"}
                 sx={{
                   "&::-webkit-scrollbar": {
-                    width: "8px",
+                    width: "6px",
                     borderRadius: "8px",
-                    backgroundColor: `rgb(23,25,35)`,
+                    border: "1px solid rgb(27,32,44)",
                   },
                   "&::-webkit-scrollbar-thumb": {
-                    border: "1px solid rgb(23,25,35)",
-                    height: "5px",
-                    backgroundColor: `rgb(26,32,44)`,
+                    height: "4px",
+                    borderRadius: "8px",
+                    backgroundColor: `gray.900`,
                   },
                 }}
               >
@@ -193,9 +177,12 @@ export default function Blogs() {
                 display="flex"
                 alignItems="center"
               >
+                <Avatar size="xs" />
                 <Text fontWeight="medium">{ele.name}</Text>
-                <Text fontWeight={"semibold"}>—</Text>
-                <Text>{ele.createdAt.split("T")[0]}</Text>
+                <Text>—</Text>
+                <Text>
+                  {ele.createdAt.split("T")[0].replaceAll("-", " / ")}
+                </Text>
               </HStack>
             </Box>
           </WrapItem>
