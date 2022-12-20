@@ -35,7 +35,7 @@ export default function Blogs() {
   async function fetchdata() {
     let jwt = Cookies.get("jwttoken");
     try {
-      let res = await axios.get("http://localhost:8080/blog", {
+      let res = await axios.get("https://blog-app-yz77.onrender.com/blog", {
         headers: {
           Authorization: `Bearer ${jwt}`,
         },
@@ -51,7 +51,7 @@ export default function Blogs() {
       try {
         if (error.response.status === 400) {
           let refreshtoken = Cookies.get("refreshtoken");
-          let res1 = await axios.post("http://localhost:8080/user/refresh", {
+          let res1 = await axios.post("https://blog-app-yz77.onrender.com/user/refresh", {
             headers: {
               Authorization: "Bearer " + refreshtoken + " " + jwt,
             },
@@ -68,7 +68,7 @@ export default function Blogs() {
           });
           jwt = Cookies.get("jwttoken");
           axios
-            .get("http://localhost:8080/blog", {
+            .get("https://blog-app-yz77.onrender.com/blog", {
               headers: {
                 Authorization: `Bearer ${jwt}`,
               },

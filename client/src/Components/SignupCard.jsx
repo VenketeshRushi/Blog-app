@@ -38,36 +38,6 @@ export default function SignupCard() {
     }
   }, []);
 
-  // async function checkrefrshtoken() {
-  //   try {
-  //     let jwt = Cookies.get("jwttoken");
-  //     let refreshtoken = Cookies.get("refreshtoken");
-  //     let response = await axios.post("http://localhost:8080/user/refresh", {
-  //       headers: {
-  //         Authorization: "Bearer " + refreshtoken + " " + jwt,
-  //       },
-  //     });
-  //     if ((response.data = "Token is good to go!")) {
-  //       return navigate("/blogs");
-  //     }
-  //     Cookies.set("jwttoken", response.data.jwttoken, {
-  //       expires: new Date(new Date().getTime() + 60 * 60 * 1000),
-  //     });
-  //     Cookies.set("userid", response.data.userid, {
-  //       expires: new Date(new Date().getTime() + 60 * 60 * 1000),
-  //     });
-  //     Cookies.set("role", response.data.role, {
-  //       expires: new Date(new Date().getTime() + 60 * 60 * 1000),
-  //     });
-  //     navigate("/blogs");
-  //   } catch (error) {
-  //     Cookies.remove("jwttoken");
-  //     Cookies.remove("refreshtoken");
-  //     Cookies.remove("userid");
-  //     Cookies.remove("role");
-  //     navigate("/");
-  //   }
-  // }
 
   const hanldeChange = (e) => {
     const { name, value } = e.target;
@@ -84,7 +54,7 @@ export default function SignupCard() {
     console.log(signUpcreds);
     try {
       let response = await axios.post(
-        "http://localhost:8080/user/signup",
+        "https://blog-app-yz77.onrender.com/user/signup",
         signUpcreds
       );
       setToast(toast, "Signup Successfull", "success");

@@ -45,7 +45,7 @@ export default function () {
     let jwt = Cookies.get("jwttoken");
     let userid = Cookies.get("userid");
     try {
-      let res = await axios.get("http://localhost:8080/blog/yourblogs", {
+      let res = await axios.get("https://blog-app-yz77.onrender.com/blog/yourblogs", {
         headers: {
           Authorization: `Bearer ${jwt}`,
         },
@@ -61,7 +61,7 @@ export default function () {
       try {
         if (error.response.status === 400) {
           let refreshtoken = Cookies.get("refreshtoken");
-          let res1 = await axios.post("http://localhost:8080/user/refresh", {
+          let res1 = await axios.post("https://blog-app-yz77.onrender.com/user/refresh", {
             headers: {
               Authorization: "Bearer " + refreshtoken + " " + jwt,
             },
@@ -78,7 +78,7 @@ export default function () {
           });
           jwt = Cookies.get("jwttoken");
           axios
-            .get("http://localhost:8080/blog/yourblogs", {
+            .get("https://blog-app-yz77.onrender.com/blog/yourblogs", {
               headers: {
                 Authorization: `Bearer ${jwt}`,
               },
@@ -111,7 +111,7 @@ export default function () {
 
   const handledelete = (id) => {
     try {
-      let response = axios.delete(`http://localhost:8080/blog/deleteblog`, {
+      let response = axios.delete(`https://blog-app-yz77.onrender.com/blog/deleteblog`, {
         params: {
           id: id,
         },

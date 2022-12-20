@@ -51,7 +51,7 @@ function Writeblog() {
     formData.append("title", title);
     formData.append("description", input);
     try {
-      let res = await axios.post("http://localhost:8080/blog/blog", formData, {
+      let res = await axios.post("https://blog-app-yz77.onrender.com/blog/blog", formData, {
         headers: {
           Authorization: `Bearer ${jwt}`,
         },
@@ -61,7 +61,7 @@ function Writeblog() {
       try {
         if (error.response.status === 400) {
           let refreshtoken = Cookies.get("refreshtoken");
-          let res1 = await axios.post("http://localhost:8080/user/refresh", {
+          let res1 = await axios.post("https://blog-app-yz77.onrender.com/user/refresh", {
             headers: {
               Authorization: "Bearer " + refreshtoken,
             },
@@ -78,7 +78,7 @@ function Writeblog() {
           jwt = Cookies.get("jwttoken");
 
           let res2 = await axios.post(
-            "http://localhost:8080/blog/blog",
+            "https://blog-app-yz77.onrender.com/blog/blog",
             formData,
             {
               headers: {

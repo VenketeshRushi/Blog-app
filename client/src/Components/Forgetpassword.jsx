@@ -41,7 +41,7 @@ export default function Forgetpassword() {
     console.log(otp);
     if (otp === code) {
       try {
-        let res = await axios.post("http://localhost:8080/user/resetpassword", {
+        let res = await axios.post("https://blog-app-yz77.onrender.com/user/resetpassword", {
           data: { email: resetemail, password: resetepass },
         });
         dispatch(resetpasswordremove());
