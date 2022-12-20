@@ -7,7 +7,6 @@ const {
   deleteblog,
 } = require("../controllers/blog.controller");
 const fileUpload = require("express-fileupload");
-const BlogModel = require("../model/blog.model");
 const cloudinary = require("cloudinary").v2;
 
 const app = express.Router();

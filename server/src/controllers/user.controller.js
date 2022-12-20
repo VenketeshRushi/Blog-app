@@ -26,19 +26,19 @@ async function login({ email, password, role }) {
   let user = await UserModel.findOne({ email });
 
   if (!user) {
-    return { status: "failed", message: "Please check your email" };
+    return { status: "Failed", message: "Please check your email" };
   }
 
   const matchpassword = user.password === password;
 
   if (!matchpassword) {
-    return { status: "failed", message: "Please check your password" };
+    return { status: "Failed", message: "Please check your password" };
   }
 
   const matchrole = user.role === role;
 
   if (!matchrole) {
-    return { status: "failed", message: "Can't Login with this Role" };
+    return { status: "Failed", message: "Can't Login with this Role" };
   }
 
   const token = jwt.sign({ user }, "1234", { expiresIn: "1 hr" });
@@ -108,7 +108,7 @@ async function checkemail(email) {
     });
     return { email: user.email, otp: otp };
   } else {
-    return { status: "failed", message: "With This Email There Is No User" };
+    return { status: "Failed", message: "With This Email There Is No User" };
   }
 }
 
